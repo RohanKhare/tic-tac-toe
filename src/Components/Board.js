@@ -1,119 +1,62 @@
 import React from 'react';
-import Square from './Square';
+import Square from './Square'
 
-  class Board extends React.Component {
-        renderSquare(i) {
-            return(
-                <Square value={this.props.squares[i]} 
-                        onClick={()=> this.props.onClick(i)} 
-                />
-            );
+class Board extends React.Component{
+
+    constructor(props){
+        super(props)
+        this.state={
+            squares : Array(props.dimension*props.dimension).fill(null),
+            dimension : this.props.dimension,
+            xIsNext : true,
+            counter : -1
+            
+          }
+          
+    }
+
+      renderSqaure(i){
+        return <Square value={this.state.squares[i]} onClick={()=>this.handleOnClick(i)}
+                 />       
+       }
+       handleOnClick(i){
+         //alert("Hello!! " + i)
+         const squares = this.state.squares.slice();
+         squares[i] = (this.state.xIsNext ? 'X' : 'O')
+         this.setState({
+          squares : squares,
+          xIsNext : !this.state.xIsNext
+         });
+       }
+       
+     
+       
+        incrementByRow(cnt, counter){
+          let temp = []          
+          for(let i=0;i<cnt;i++){
+            temp.push(this.renderSqaure(counter));
+            counter = counter +1
+          }
+          return <div className="board-row">{temp}</div> ;
         }
-
-        render() {
-        
-            return (
-                <div>
-               
-                <div className="board-row">            
-                    {this.renderSquare(0)}
-                    {this.renderSquare(1)}
-                    {this.renderSquare(2)}
-                </div>
-                <div className="board-row">            
-                    {this.renderSquare(3)}
-                    {this.renderSquare(4)}
-                    {this.renderSquare(5)}
-                </div>
-                <div className="board-row">            
-                    {this.renderSquare(6)}
-                    {this.renderSquare(7)}
-                    {this.renderSquare(8)}
-                </div>
-                </div>
-            );
-        }
-  }
-
-
-  export default Board;
-
-
-
-
-   //   constructor(props){
-    //         super(props);
-    //         this.state={
-    //             history :[
-    //                 //before move
-    //                 {squares:[
-    //                     null,null,null,
-    //                     null,null,null,
-    //                     null,null,null,
-    //                 ]},
-    //                 //after first move
-    //                 {squares:[
-    //                     null,null,null,
-    //                     null,null,null,
-    //                     null,null,null,
-    //                 ]},
-                    
-    //                 //seond move
-    //                 {squares:[
-    //                     null,null,null,
-    //                     null,null,null,
-    //                     null,null,null,
-    //                 ]},
-                    
-    //                 //third move
-    //                 {squares:[
-    //                     null,null,null,
-    //                     null,null,null,
-    //                     null,null,null,
-    //                 ]},
-                    
-    //                 //fourth move
-    //                 {squares:[
-    //                     null,null,null,
-    //                     null,null,null,
-    //                     null,null,null,
-    //                 ]},
-                    
-    //                 //fifth move
-    //                 {squares:[
-    //                     null,null,null,
-    //                     null,null,null,
-    //                     null,null,null,
-    //                 ]},
-                    
-    //                 //sixth move
-    //                 {squares:[
-    //                     null,null,null,
-    //                     null,null,null,
-    //                     null,null,null,
-    //                 ]},
-                    
-    //                 //seventh move
-    //                 {squares:[
-    //                     null,null,null,
-    //                     null,null,null,
-    //                     null,null,null,
-    //                 ]},
-                    
-    //                 //eighth move
-    //                 {squares:[
-    //                     null,null,null,
-    //                     null,null,null,
-    //                     null,null,null,
-    //                 ]},
-                    
-    //                 //nineth move
-    //                 {squares:[
-    //                     null,null,null,
-    //                     null,null,null,
-    //                     null,null,null,
-    //                 ]},
-                    
-    //             ],
-    //         };
-    //     }
+     
+       render(){
+        let status = 'Next player : '+ (this.state.xIsNext ? 'X' : 'O')
+        let counter = 0;
+         let addBy = []
+         for(let j=0;j<this.state.dimension;j++){
+           addBy.push(this.incrementByRow(this.state.dimension,counter));
+           counter = counter + this.state.dimension;
+         }
+         
+         return (
+           <div>
+             <div>{status}</div>
+             <div className="board-rows">
+               {addBy}
+             </div>
+           </div>
+         );
+       }
+}
+export default Board;
