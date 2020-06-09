@@ -1,16 +1,13 @@
 import React from 'react';
-
+import './Game.css'
 
 
 
 function Square(props) {
-
-    return (
+  return (
     <button className="square" onClick={props.onClick}>
-        {props.value}
+      {props.value}
     </button>
-    );
-
+  );
 }
-
-export default Square;
+  export default Square;
