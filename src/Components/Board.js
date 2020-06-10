@@ -8,9 +8,7 @@ class Board extends React.Component{
         this.state={
             squares : Array(props.dimension*props.dimension).fill(null),
             dimension : this.props.dimension,
-            xIsNext : true,
-            counter : -1
-            
+            xIsNext : true,            
           }
           
     }
@@ -32,9 +30,9 @@ class Board extends React.Component{
          });
        }
              
-        incrementByRow(cnt, counter){
+        incrementRow(limit, counter){
           let temp = []          
-          for(let i=0;i<cnt;i++){
+          for(let i=0;i<limit;i++){
             temp.push(this.renderSqaure(counter));
             counter = counter +1
           }
@@ -50,9 +48,9 @@ class Board extends React.Component{
           status = 'Next player : '+ (this.state.xIsNext ? 'X' : 'O');
         }
         let counter = 0;
-         let addBy = []
+         let squareBoard = []
          for(let j=0;j<this.state.dimension;j++){
-           addBy.push(this.incrementByRow(this.state.dimension,counter));
+          squareBoard.push(this.incrementRow(this.state.dimension,counter));
            counter = counter + this.state.dimension;
          }
          
@@ -60,7 +58,7 @@ class Board extends React.Component{
            <div>
              <div>{status}</div>
              <div className="board-rows">
-               {addBy}
+               {squareBoard}
              </div>
            </div>
          );
@@ -141,20 +139,16 @@ class Board extends React.Component{
         let rightDiagonalArray=[];
 
         for(  let i=this.state.dimension-1; i< this.state.dimension*this.state.dimension;i+=(this.state.dimension-1)){
-
           if(counter<this.state.dimension){
             temp[counter] = i;
             counter+=1;
           }
-
           if(counter === this.state.dimension){
             rightDiagonalArray.push(temp);
             temp = [];
             counter=0;
             break;  
-          }
-
-          
+          }   
         }
         return rightDiagonalArray;
        }
@@ -193,80 +187,26 @@ class Board extends React.Component{
         return lineArray;
        }
 
-      //  calculateWinner(squares){
-      //     const lines = this.comparisonArray();
-      //     console.log(lines)
-      //       for(let i=0; i<lines.length;i++){
-      //         const [a, b, c] = lines[i];
-      //         if(squares[a] && squares[a]===squares[b] && squares[a]===squares[c]){
-      //           return squares[a];
-      //         }
-      //       }
-      //       return null;
-      //     }
-
-          calculateWinner(squares){
-            const lines = this.comparisonArray();
-            
-              for(let i=0; i<lines.length;i++){
-                let temp  = lines[i];
-                for(let j=1; j<this.state.dimension;j++){
-                  if(temp[0] && temp[0]==temp[j])
-                  {
-                    return temp[0];
-                  }else{
-                    return null;
-                  }
-                }
-                // if(squares[a] && squares[a]===squares[b] && squares[a]===squares[c]){
-                //   return squares[a];
-                // }
-              }
-              return null;
+      calculateWinner(squares){
+        const lines = this.comparisonArray();
+        //console.log(lines)
+          for(let i=0; i<lines.length;i++){
+            const[a, b, c] = lines[i];
+            console.log([a, b, c]);
+            if(squares[a] && squares[a]===squares[b] && squares[a]===squares[c]){
+              return squares[a];
             }
+          }
+          return null;
+        }
 
-          
-                
-      //         }
-      //       }      
-              
-      //       //   if(squares[a] && squares[a]===squares[b] && squares[a]===squares[c]){
-      //       //     return squares[a];
-      //       //   }
-      //       // }
-      //       // return null;
-      //     }
-
-
-      //  calculateWinner(squares){
-      //    let temp = [this.state.dimension];
-      //    let counter = 0;
-      //     const lines = this.comparisonArray();
-      //       for(let i=0; i<lines.length;i++){
-      //         const [a, b, c] = lines[i];
-      //         temp = lines[i];
-      //         let status;
-      //         while(counter<this.state.dimension){
-                
-      //           if(squares[0]===squares[counter]){
-      //             status = true;
-      //           }else{
-      //             return null;
-      //           }
-      //         }
-      //         if(status){
-      //           return squares[0];
-      //         }
-
-      //         // if(squares[a] && squares[a]===squares[b] && squares[a]===squares[c]){
-      //         //   return squares[a];
-      //         // }
-      //       }
-      //     }
-         
-         
+       
 }
 export default Board;
+
+
+
+//   HARDCODED Comparison for 3/5/7 dimension
 
  //  calculateWinner(squares){
       //     if(this.state.dimension === 3){
